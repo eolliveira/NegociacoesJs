@@ -22,6 +22,31 @@ class NegociacaoController {
 
         let service = new NegociacoesService();
 
+        service.importaNegociacoesDaSemana()
+            .then((negociacoes) => {
+                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
+                this._mensagem.texto = "Negociações da semana obtidas com sucesso";
+            })
+            .catch(erro => this._mensagem.texto = erro);
+
+
+        service.importaNegociacoesDaSemanaAnterior()
+            .then((negociacoes) => {
+                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
+                this._mensagem.texto = "Negociações da semana Anterior obtidas com sucesso"
+            })
+            .catch(erro => this._mensagem.texto = erro);
+
+
+        service.importaNegociacoesDaSemanaRetrasada()
+            .then((negociacoes) => {
+                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
+                this._mensagem.texto = "Negociações da semana Retrasada obtidas com sucesso"
+            })
+            .catch(erro => this._mensagem.texto = erro);
+
+
+        /*
         service.importaNegociacoesDaSemana((erro, negociacoes) => {
             if (erro) {
                 console.log(erro);
@@ -29,8 +54,27 @@ class NegociacaoController {
             }
 
             negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
-            this._mensagem.texto = 'Negociacoes importadas com sucesso';
+
+            service.importaNegociacoesDaSemanaAnterior((erro, negociacoes) => {
+                if (erro) {
+                    console.log(erro);
+                    return;
+                }
+
+                negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+
+                service.importaNegociacoesDaSemanaRetrasada((erro, negociacoes) => {
+                    if (erro) {
+                        console.log(erro);
+                        return;
+                    }
+
+                    negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+                    this._mensagem.texto = 'Negociacoes importadas com sucesso';
+                });
+            });
         });
+        */
     }
 
     adiciona(event) {

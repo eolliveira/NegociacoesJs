@@ -1,23 +1,73 @@
 class NegociacoesService {
 
-    importaNegociacoesDaSemana(cb) {
-        let xhr = new XMLHttpRequest();
+    importaNegociacoesDaSemana() {
 
-        xhr.open('GET', 'negociacoes/semana');
+        return new Promise((resolve, reject) => {
 
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
+            let xhr = new XMLHttpRequest();
 
-                    cb(null, JSON.parse(xhr.response)
-                        .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)))
-                } else {
-                    console.log(xhr.responseText);
-                    cb('Não foi possivel importar as Negociacoes', null);
+            xhr.open('GET', 'negociacoes/semana');
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response)
+                            .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)))
+                    } else {
+                        console.log(xhr.responseText);
+                        reject('Não foi possivel importar as Negociacoes da Semana');
+                    }
                 }
-            }
-        };
+            };
 
-        xhr.send();
+            xhr.send();
+
+        });
+    }
+
+    importaNegociacoesDaSemanaAnterior() {
+
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'negociacoes/anterior');
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response)
+                            .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)))
+                    } else {
+                        console.log(xhr.responseText);
+                        reject('Não foi possivel importar as Negociacoes da Semana Anterior');
+                    }
+                }
+            };
+
+            xhr.send();
+        });
+    }
+
+    importaNegociacoesDaSemanaRetrasada() {
+
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'negociacoes/retrasada');
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response)
+                            .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)))
+                    } else {
+                        console.log(xhr.responseText);
+                        reject('Não foi possivel importar as Negociacoes da Semana Retrasada');
+                    }
+                }
+            };
+
+            xhr.send();
+        });
     }
 }
